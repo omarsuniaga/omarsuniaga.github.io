@@ -1,19 +1,19 @@
-## Welcome to GitHub Pages
+## Omar Suniaga
 
-You can use the [editor on GitHub](https://github.com/omarsuniaga/omarsuniaga.github.io/edit/main/index.md) to maintain and preview the content for your website in Markdown files.
+Bienvenidos a mi espacio digital.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+En esta pagina vas a encontrar dos de mis pasatiempos favoritos, la musica y al programacion
 
-### Markdown
+### Programacion
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Este espacio esta creado para poner en ejecucion los topicos aprendidos en los lenguajes de programacion
 
 ```markdown
 Syntax highlighted code block
 
-# Header 1
-## Header 2
-### Header 3
+# Titulo 1
+## Titulo 2
+### Titulo 3
 
 - Bulleted
 - List
@@ -28,10 +28,10 @@ Syntax highlighted code block
 
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
 
-### Jekyll Themes
+### Musica
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/omarsuniaga/omarsuniaga.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+Este seria mi portafolio musical
 
-### Support or Contact
+### Musica Producida por mi
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+Editada y masterizada por mi
