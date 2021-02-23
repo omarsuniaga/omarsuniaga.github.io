@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AcumuladorContador</title>
+</head>
+
+<body>
+    <div>
+        <input type="number" id="valor" value="0">
+        <br>
+        <button id="aumentar" onclick="aun()">aumentar</button>
+        <button id="disminuir" onclick="dis()">Disminuir</button>
+        <button id="acumular" onclick="acc()">Acumular</button>
+    </div>
+    <div>
+        Resultado:
+        <p id="result">
+        </p>
+    </div>
+    <script>
+        let numero = document.querySelector('#valor')
+        let result = document.querySelector('#result');
+        const aumentar = document.querySelector("#aumentar")
+        const disminuir = document.querySelector("#disminuir")
+        const acumular = document.querySelector("#acumular")
+
+        function aun() {
+            numero.value++
+        }
+        function dis() {
+            numero.value--
+        }
+        function acc() {
+            contador = parseInt(numero.value)
+            result.innerText = parseInt(numero.value);
+            // acumulador = acumulador + contador
+            console.log(result.innerText);
+        }
+    </script>
+</body>
+
+</html>
