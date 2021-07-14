@@ -5,23 +5,892 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Omar Suniaga - Web Site</title>
+    <title>App-tividades</title>
+    <!-- firebase.auth -->
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css" />
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css" />
+
 </head>
 
 <body>
-    <nav>
-        <h1>
-            Omar Suniaga
-        </h1>
-    </nav>
-    <section>
-        <article>
-            Pagina Web en construccion
-        </article>
-        <aside>
-            Estoy aprendiendo e implementando lo que aprendo en esta pagina
-        </aside>
-    </section>
+
+    <div id="App">
+        <!-- iniciar sesion -->
+        <div class='SesionInicio' v-if='!sesion'>
+            <div id="SesionInicioMenu">
+                <nav class="navbar navbar-light bg-light">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="#">
+                            <img src="https://www.svgrepo.com/show/51889/list.svg" alt="" width="30" height="30"
+                                class="d-inline-block align-text-top">
+                            App-tividades
+                        </a>
+                    </div>
+                </nav>
+                <!-- FORMULARIO -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <p class="fs-1">Login</p>
+                            <div class="card shadow p-3 mb-5 bg-body rounded">
+                                <div class="card-body">
+                                    <form role="formUser" @submit.prevent="iniciarSesion()">
+                                        <div id="signIn" class="form-text d-flex justify-content-end">
+                                            <button type="button" class="btn btn-light" data-bs-toggle="modal"
+                                                data-bs-target="#staticBackdrop">
+                                                Sign In
+                                            </button>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="inEmail" class="form-label">Email</label>
+                                            <input type="email" v-model.trim="formUser.email" class="form-control mb-3"
+                                                id="email" aria-describedby="emailHelp">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="inPassword" class="form-label">Password</label>
+                                            <input type="password" v-model.trim="formUser.pass" class="form-control"
+                                                id="password">
+                                        </div>
+                                        <div class="mb-3 form-check">
+                                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                            <label class="form-check-label" for="exampleCheck1" v-model="recordar">No
+                                                cerrar sesion</label>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary">Entrar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Sign In</h5>
+                            <button type="button" id="btn-close" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="modal-body">
+                                <form class="row g-3 needs-validation" @submit.prevent="" novalidate>
+                                    <div class="col-md-6">
+                                        <input placeholder="Nombre" type=" text" class="form-control"
+                                            id="validationNombre" required v-model.trim="newUser.firt_name">
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input placeholder="Apellido" type="text" class="form-control"
+                                            id="validationApellido" required v-model.trim="newUser.last_name">
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="input-group has-validation">
+                                            <span class="input-group-text" id="username">@</span>
+                                            <input placeholder="Username" type="text" class="form-control"
+                                                id="validationUsername" aria-describedby="username" required
+                                                v-model.trim="newUser.userName">
+                                            <div class="invalid-feedback">
+                                                Please choose a username.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-1">
+                                        <input placeholder="eMail" type="email" class="form-control" id="Email"
+                                            aria-describedby="email" required v-model.trim="newUser.email">
+                                        <div id="newEmail" class="form-text">
+                                        </div>
+                                    </div>
+                                    <div class="mb-1">
+                                        <input placeholder="Password" type="password" class="form-control" id="Pass1"
+                                            required v-model.trim="newUser.pass1">
+                                    </div>
+                                    <div class="mb-1">
+                                        <input placeholder="Repetir Password" type="password" class="form-control"
+                                            id="Pass2" required v-model.trim="newUser.pass2">
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="invalidCheck"
+                                                required>
+                                            <label class="form-check-label" for="invalidCheck">
+                                                Agree to terms and conditions
+                                            </label>
+                                            <div class="invalid-feedback">
+                                                You must agree before submitting.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" id="registrar" @click="validarForm"
+                                            class="btn btn-primary">Registrar</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- SESION -->
+        <div id="Sesion" class='col-12' v-if='sesion'>
+            <div id='SesionMenu'>
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="#">App-tividades</a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item"><a type="button" class="nav-link" @click="mostrar=0">Listado</a>
+                                </li>
+                                <li class="nav-item"><a type="button" class="nav-link" @click="mostrar=2">Pendientes</a>
+                                </li>
+                                <li class="nav-item"><a type="button" class="nav-link" @click="mostrar=1">Realizadas</a>
+                                </li>
+                                <li class="nav-item"><a type="button" class="nav-link" @click="mostrar=3">Eliminadas</a>
+                                </li>
+                                <li class="nav-item"><a type="button" class="nav-link" @click="mostrar=4">Estadisticas
+                                    </a></li>
+                                <li class="nav-item"><a type="button" class="nav-link" @click="cerrarSesion">Cerrar
+                                        Sesion </a>
+                                </li>
+                            </ul>
+                            <form class="d-flex" @submit.prevent="buscar(palabra)">
+                                <input class="form-control me-2" type="search" placeholder="Buscar Actividad"
+                                    aria-label="Buscar" v-model="palabra" @keyup='buscar(palabra)'>
+                                <button class="btn btn-outline-success" @click='mostrar=5'>Buscar</button>
+                            </form>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div id='SesionCabecera' class='d-flex justify-content-between m-4'>
+                <h1>Bienvenidos</h1>
+                <button class="btn btn-outline-info me-md-2 btn-sm m-3" data-bs-toggle="modal"
+                    data-bs-target="#staticBackdrop">+Actividades</button>
+            </div>
+            <h6>
+                {{formUser.email}}
+            </h6>
+            <!-- MODAL REGISTRAR ACTIVIDADES -->
+            <div id="SesionCuerpo">
+                <div class='container'>
+                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Registrar Actividad</h5>
+                                    <button type="button" id="btn-close" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="modal-body">
+                                        <form class="row g-3">
+                                            <div class="col-auto">
+                                                <input type="text" class="form-control" id="titulo"
+                                                    placeholder="Actividad" v-model="actividad.titulo">
+                                            </div>
+                                            <div class="col-auto">
+                                                <input class="form-control" type="text" placeholder="Proveedor"
+                                                    aria-label="Proveedor" v-model="actividad.proveedor">
+                                            </div>
+                                            <div class="col-auto">
+                                                <input class="form-control" type="number" min='2500'
+                                                    placeholder="Precio" aria-label="precio" v-model="actividad.precio">
+                                            </div>
+                                            <div class="col-auto">
+                                                <input class="form-control" type="text" placeholder="Cuanto tiempo?"
+                                                    aria-label="Tiempo" v-model="actividad.tiempo">
+                                            </div>
+                                            <div class="col-auto">
+                                                <input class="form-control" type="text" placeholder="Vestimenta"
+                                                    aria-label="Vestimenta" v-model="actividad.vestimenta">
+                                            </div>
+                                            <div class="col-auto">
+                                                <input class="form-control" type="text" placeholder="Lugar"
+                                                    aria-label="Lugar" v-model="actividad.lugar">
+                                            </div>
+                                            <div class="col-auto">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="checkbox"
+                                                        v-model="actividad.fijo">
+                                                    <label for="checkbox">¿Fijo?</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto" v-if="actividad.fijo">
+                                                <div class="input-group">
+                                                    <span class="input-group-text">Fijo</span>
+                                                    <select class="form-select" id="dia" v-model="actividad.dia">
+                                                        <option selected>Selecciona un dia</option>
+                                                        <option value="Todos los Lunes">Lunes</option>
+                                                        <option value="Todos los Martes">Martes</option>
+                                                        <option value="Todos los Miercoles">Miercoles</option>
+                                                        <option value="Todos los Jueves">Jueves</option>
+                                                        <option value="Todos los Viernes">Viernes</option>
+                                                        <option value="Todos los Sabados">Sabados</option>
+                                                        <option value="Todos los Domingos">Domingos</option>
+                                                    </select>
+                                                    <input type="datetime" aria-label="hora" class="form-control"
+                                                        placeholder="Hora" v-model="actividad.hora">
+                                                </div>
+                                            </div>
+                                            <div class="col-auto" v-else>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">¿Es Eventual?</span>
+                                                    <input class="form-control" type="datetime-local"
+                                                        placeholder="Fecha" aria-label="fecha"
+                                                        v-model="actividad.fecha">
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <textarea class="form-control mb-3" id="descripcion" rows="3"
+                                                    placeholder="Descripcion"
+                                                    v-model="actividad.descripcion"></textarea>
+                                            </div>
+                                            <button class="btn btn-success" @click="registrarActividad">Guardar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LISTADO ACTIVIDADES -->
+            <div class="container" v-if="mostrar===0">
+                <div class="row" v-if="actividades.length">
+                    <ol v-for="actividad in actividades">
+                        <div v-if="actividad.estado !=='eliminada'">
+                            <div :class="[actividad.estado !=='pendiente' ? 'alert alert-info alert-dismissible fade show ' : 'alert alert-danger alert-dismissible fade show' ]"
+                                role="alert">
+                                <div class="cabecera d-flex justify-content-between">
+                                    <div>
+                                        <h4 class="alert-heading" style='text-transform: capitalize'>
+                                            {{actividad.titulo}}</h4>
+                                        <strong>{{actividad.lugar}}</strong>
+                                    </div>
+                                    <div v-if="actividad.fijo">
+                                        <strong>{{actividad.dia}}</strong>
+                                        <p class=' text-end fw-lighter'>{{actividad.hora}}</p>
+                                    </div>
+                                    <div v-else>
+                                        <strong>{{actividad.fecha}}</strong>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="acciones d-flex justify-content-between">
+                                    <div>
+                                        <span class="badge rounded-pill bg-danger ">{{actividad.precio}}</span>
+                                        <span class="badge rounded-pill bg-dark"
+                                            style='text-transform: capitalize'>{{actividad.vestimenta}}</span>
+                                        <span class="badge rounded-pill bg-primary ">{{actividad.tiempo}}</span>
+                                        <span class="badge rounded-pill bg-warning "
+                                            style='text-transform: capitalize'>{{actividad.proveedor}}</span>
+                                    </div>
+
+                                    <div>
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                Acciones
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-dark"
+                                                aria-labelledby="dropdownMenuButton2">
+                                                <ul v-for="item in opcion">
+                                                    <a class="dropdown-item"
+                                                        @click="acciones(item,actividad.id)">{{item}}</a>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="descripcion">
+                                    <p class=' text-start fw-lighter'>{{actividad.descripcion}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </ol>
+                </div>
+                <div v-else class="text-center">
+                    <h2>No hay Actividades Registradas</h2>
+                    <p>
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Para
+                            ingresar una actividad haz click aqui</a>
+                    </p>
+                </div>
+            </div>
+            <!-- ACTIVIDADES REALIZADAS -->
+            <div class="container" v-if="mostrar===1">
+                <h2>Actividades Realizadas</h2>
+                <div class="row">
+                    <ol v-for="actividad in actividades">
+                        <div v-if="actividad.estado==='finalizada'">
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h4 class="alert-heading">{{actividad.titulo}}</h4>
+                                        <strong>{{actividad.lugar}}</strong>
+                                    </div>
+                                    <div v-if="actividad.fijo">
+                                        <strong>{{actividad.dia}}</strong>
+                                        <p class=' text-end fw-lighter'>{{actividad.hora}}</p>
+                                    </div>
+                                    <div v-else>
+                                        <strong>{{actividad.fecha}}</strong>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="acciones d-flex justify-content-between">
+                                    <div>
+                                        <span class="badge rounded-pill bg-danger ">{{actividad.precio}}</span>
+                                        <span class="badge rounded-pill bg-dark ">{{actividad.vestimenta}}</span>
+                                        <span class="badge rounded-pill bg-primary ">{{actividad.tiempo}}</span>
+                                        <span class="badge rounded-pill bg-warning ">{{actividad.proveedor}}</span>
+                                    </div>
+
+
+                                </div>
+                                <div id="descripcion">
+                                    <p class=' text-start fw-lighter'>{{actividad.descripcion}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </ol>
+                </div>
+            </div>
+            <!-- ACTIVIDADES Pendientes -->
+            <div class="container" v-if="mostrar===2">
+                <h2>Actividades Pendientes</h2>
+                <div class="row">
+                    <ol v-for="actividad in actividades">
+                        <div v-if="actividad.estado =='pendiente'">
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <div v-if="actividad.estado" class="cabecera d-flex justify-content-between">
+                                    <div>
+                                        <h4 class="alert-heading">{{actividad.titulo}}</h4>
+                                        <strong>{{actividad.lugar}}</strong>
+                                    </div>
+                                    <div v-if="actividad.fijo">
+                                        <strong>{{actividad.dia}}</strong>
+                                        <p class=' text-end fw-lighter'>{{actividad.hora}}</p>
+                                    </div>
+                                    <div v-else>
+                                        <strong>{{actividad.fecha}}</strong>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="acciones d-flex justify-content-between">
+                                    <div>
+                                        <span class="badge rounded-pill bg-danger ">{{actividad.precio}}</span>
+                                        <span class="badge rounded-pill bg-dark ">{{actividad.vestimenta}}</span>
+                                        <span class="badge rounded-pill bg-primary ">{{actividad.tiempo}}</span>
+                                        <span class="badge rounded-pill bg-warning ">{{actividad.proveedor}}</span>
+                                    </div>
+                                </div>
+                                <div id="descripcion">
+                                    <p class=' text-start fw-lighter'>{{actividad.descripcion}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </ol>
+                </div>
+            </div>
+            <!-- ACTIVIDADES ELIMINADAS -->
+            <div class="container" v-if="mostrar===3">
+                <h2>Actividades Eliminadas</h2>
+                <div class="row">
+                    <ol v-for="actividad in actividades">
+                        <div v-if="actividad.estado==='eliminada'">
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <div class="d-flex justify-content-between">
+                                    <span>
+                                        {{actividad.titulo}} - {{actividad.lugar}} - {{actividad.dia}} -
+                                        {{actividad.precio}} - {{actividad.proveedor}}
+                                        {{actividad.fecha}}</span>
+                                    <a @click="limpiarHistorial(actividad.id)">X</a>
+                                </div>
+                            </div>
+                        </div>
+                    </ol>
+                </div>
+            </div>
+            <!-- ESTADISTICAS -->
+            <div class="container" v-if="mostrar===4">
+                <h2>Estadisticas</h2>
+                <div class="row">
+                    <span>
+                        total de actividades : {{actividades.length}}
+                    </span>
+                    <span>
+                        total de Ingresos : {{ingresos}}
+                    </span>
+                </div>
+            </div>
+            <!-- BUSQUEDAD -->
+            <div class="container" v-if="mostrar===5">
+                <h2>Resultados</h2>
+                <div class="row" v-if='palabra' id="listado">
+                    <ol v-for="actividad in actividades">
+                        <div v-if="actividad.titulo==palabra">
+                            <div :class="[actividad.estado !=='pendiente' ? 'alert alert-info alert-dismissible fade show ' : 'alert alert-danger alert-dismissible fade show' ]"
+                                role="alert">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h4 class="alert-heading" style='text-transform: capitalize'>
+                                            {{actividad.titulo}}</h4>
+                                        <strong>{{actividad.lugar}}</strong>
+                                    </div>
+                                    <div v-if="actividad.fijo">
+                                        <strong>{{actividad.dia}}</strong>
+                                        <p class=' text-end fw-lighter'>{{actividad.hora}}</p>
+                                    </div>
+                                    <div v-else>
+                                        <strong>{{actividad.fecha}}</strong>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="acciones d-flex justify-content-between">
+                                    <div>
+                                        <span class="badge rounded-pill bg-danger ">{{actividad.precio}}</span>
+                                        <span class="badge rounded-pill bg-dark"
+                                            style='text-transform: capitalize'>{{actividad.vestimenta}}</span>
+                                        <span class="badge rounded-pill bg-primary ">{{actividad.tiempo}}</span>
+                                        <span class="badge rounded-pill bg-warning "
+                                            style='text-transform: capitalize'>{{actividad.proveedor}}</span>
+                                    </div>
+
+                                    <div>
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                Acciones
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-dark"
+                                                aria-labelledby="dropdownMenuButton2">
+                                                <ul v-for="item in opcion">
+                                                    <a class="dropdown-item"
+                                                        @click="acciones(item,actividad.id)">{{item}}</a>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="descripcion">
+                                    <p class=' text-start fw-lighter'>{{actividad.descripcion}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/firebase/8.6.3/firebase-app.js'
+            integrity='sha512-EwBpnLToUQyUar2snfyzfCYsFIXniGy7J9mFx7a5udKrAt7hD5QwtN8hg5KCzH76nw+hP+ep1OLGdnbLe9NyiQ=='
+            crossorigin='anonymous'></script>
+        <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.9/vue.min.js'
+            integrity='sha512-deBbW1lpMT6h3gvOzmeMPft4pf9CMGjCKc5jSNq2pMSjtkMPuELbd4N3LKXVq/t1t6qco4q3u/XguyqGqlOMjA=='
+            crossorigin='anonymous'></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+            integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
+            integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
+            crossorigin="anonymous"></script>
+        <script>
+            // Your web app's Firebase configuration
+            // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+            var firebaseConfig = {
+                apiKey: "AIzaSyAeuLu0NjTq9BQHpWsct-wTeVorw-Kj284",
+                authDomain: "apptividades-5b66f.firebaseapp.com",
+                projectId: "apptividades-5b66f",
+                storageBucket: "apptividades-5b66f.appspot.com",
+                messagingSenderId: "92553077594",
+                appId: "1:92553077594:web:aedbc59c7dbff37ed00963",
+                measurementId: "G-NK6ZZ4PWF8"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            // firebase.analytics();
+            const auth = firebase.auth();
+            //firebase UI
+            var ui = new firebaseui.auth.AuthUI(firebase.auth());
+            //Firebase DDBB
+            var db = firebase.firestore();
+            // Your web app's Firebase configuration
+            // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
+        </script>
+
+        <script>
+
+            const STORAGE_KEY = 'Apptividades';
+
+            var storage = {
+                fetch: function () {
+                    var actividades = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
+                    actividades.forEach((element, index) => {
+                        element.id = index++
+                    });
+                    storage.uid = actividades.length
+                    return actividades
+                },
+                guardar: function (actividades) {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(actividades))
+                }
+            }
+
+
+            const vm = new Vue({
+                el: "#App",
+                data: {
+                    mostrar: 0,
+                    ingresos: totalIngresos(),
+                    validation: 'needs-validation',
+                    palabra: '',
+                    sesion: false,
+                    recordar: false,
+                    formUser: {
+                        email: '',
+                        pass: '',
+                    },
+                    opcion: ['finalizar', 'eliminar', 'editar'],
+                    newUser: {
+                        firt_name: "",
+                        last_name: "",
+                        username: '',
+                        email: "",
+                        pass1: '',
+                        pass2: '',
+                    },
+                    actividades: storage.fetch(),
+                    actividad: {},
+                    papelera: [],
+                    errorClass: true,
+                },
+                mounted() {
+                    this.observador();
+                },
+                methods: {
+                    observador() {
+                        firebase.auth().onAuthStateChanged((user) => {
+                            if (user) {
+                                // User is signed in, see docs for a list of available properties
+                                // https://firebase.google.com/docs/reference/js/firebase.User
+                                var uid = user.uid;
+                                this.sesion = true;
+                                this.formUser.email = user.email;
+                                console.log(uid);
+                                // ...
+                            } else {
+                                // User is signed out
+                                console.log('User is signed out');
+                                // ...
+                            }
+                        });
+                        const user = firebase.auth().currentUser;
+                        if (user) {
+                            // User is signed in, see docs for a list of available properties
+                            console.log(user);
+                            // ...
+                        } else {
+                            // No user is signed in.
+                            console.log('User is signed out');
+                        }
+                    },
+                    registrarActividad() {
+                        if (this.actividad.fijo) {
+                            this.actividades.push({
+                                titulo: this.actividad.titulo,
+                                lugar: this.actividad.lugar,
+                                precio: this.actividad.precio,
+                                proveedor: this.actividad.proveedor,
+                                tiempo: this.actividad.tiempo,
+                                vestimenta: this.actividad.vestimenta,
+                                descripcion: this.actividad.descripcion,
+                                dia: this.actividad.dia,
+                                hora: this.actividad.hora,
+                                fijo: true,
+                                estado: 'pendiente'
+                            })
+                        } else {
+                            this.actividades.push({
+                                titulo: this.actividad.titulo,
+                                lugar: this.actividad.lugar,
+                                precio: this.actividad.precio,
+                                proveedor: this.actividad.proveedor,
+                                tiempo: this.actividad.tiempo,
+                                vestimenta: this.actividad.vestimenta,
+                                descripcion: this.actividad.descripcion,
+                                fecha: this.actividad.fecha,
+                                fijo: false,
+                                estado: 'pendiente'
+                            })
+                        }
+                        this.guardarActividad()
+                        // this.writeUserData()
+                    },
+                    writeUserData() {
+                        var userId = '01'
+                        var name = "omar"
+                        var email = "inar@fmail.com"
+                        firebase.database().ref('actividades/' + userId).set({
+                            username: name,
+                            email: email,
+                        });
+                    },
+                    buscar(palabra) {
+                        this.palabra = palabra
+                        if (this.palabra.trim() === '') {
+                            this.mostrar = 0
+                        } else {
+                            this.mostrar = 5
+                            const listado = document.querySelector('#listado')
+                            listado.innerHTML = '';
+                            for (let actividad of this.actividades) {
+                                let titulo = actividad.titulo.toLowerCase();
+                                let lugar = actividad.lugar;
+                                if (titulo.indexOf(palabra) !== -1) {
+                                    listado.innerHTML +=
+                                        `
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <div class="d-flex justify-content-between">
+                                    <span>
+                                        ${actividad.titulo} - ${actividad.lugar} - ${actividad.dia} -
+                                        ${actividad.precio} - ${actividad.proveedor}
+                                        ${actividad.fecha}}</span>
+                                    <a @click="limpiarHistorial(${actividad.id})">X</a>
+                                </div>
+                            </div>
+                                `
+                                }
+                            }
+                        }
+                    },
+                    acciones(item, id) {
+                        switch (item) {
+                            case 'finalizar':
+                                this.finalizarActividad(id)
+                                break;
+                            case 'eliminar':
+                                this.eliminarActividad(id)
+                                break;
+                            default:
+                                console.log('Elige una opcion');
+                                break;
+                        }
+                    },
+                    guardarActividad() {
+                        const guardar = JSON.stringify(this.actividades)
+                        localStorage.setItem(STORAGE_KEY, guardar)
+                    },
+                    finalizarActividad(id) {
+                        this.actividades.filter((e) => {
+                            if (e.id == id) {
+                                Swal.fire({
+                                    title: 'Actividad Finalizada!',
+                                    text: e.titulo,
+                                    icon: 'success',
+                                    confirmButtonText: 'Cool'
+                                })
+                                return e.estado = 'finalizada'
+                            }
+                        })
+                        this.guardarActividad()
+                    },
+                    eliminarActividad(id) {
+                        this.actividades.filter((e) => {
+                            if (e.id == id) {
+                                Swal.fire({
+                                    title: 'Actividad Eliminada!',
+                                    text: e.titulo,
+                                    icon: 'warning',
+                                    confirmButtonText: 'Cool'
+                                })
+                                return e.estado = 'eliminada'
+                            }
+                        })
+                        this.guardarActividad()
+                    },
+                    totalIngresos() {
+                        let acumulado = 0;
+                        for (let actividad of this.actividades) {
+                            acumulado = actividad.precio.reduce((a, b) => a + b, 0);//Sumas de arrays
+                        }
+                        console.log(acumulado);
+                        return acumulado
+                    },
+                    limpiarHistorial(id) {
+                        this.actividades = this.actividades.filter((e) => e.id !== id)
+                        this.guardarActividad()
+                    },
+                    editarActividad() { },
+                    CrearUsuario() {
+                        let email = this.validarEmail();
+                        let password = this.validarPassword();
+                        auth.createUserWithEmailAndPassword(email, password)
+                            .then((userCredential) => {
+                                // Signed in
+                                var user = userCredential.user;
+                                document.getElementById('btn-close').click();
+                                console.log(user);
+                            })
+                            .catch((error) => {
+                                var errorCode = error.code;
+                                var errorMessage = error.message;
+                                swal(error.message)
+                                console.log(error.message)
+                                // ..
+                            });
+                    },
+                    iniciarSesion() {
+                        let email = this.formUser.email;
+                        let password = this.formUser.pass;
+
+                        auth.signInWithEmailAndPassword(email, password)
+                            .then((userCredential) => {
+                                // Signed in
+                                var user = userCredential.user;
+                                this.sesion = true;
+                                console.log("Ha iniciado sesion con el correo: ", user.email)
+                            })
+                            .catch((error) => {
+                                this.sesion = false
+                                swal('Usuario No Existe');
+                                // var errorCode = error.code;
+                                // var errorMessage = error.message;
+                            });
+                    },
+                    cerrarSesion() {
+                        firebase.auth().signOut().then(() => {
+                            swal('Bye Bye')
+                            this.sesion = false
+                            this.recordar = true;
+                        }).catch((error) => {
+                            // An error happened.
+                        });
+                    },
+                    validarForm() {
+                        (function () {
+                            'use strict'
+                            var forms = document.querySelectorAll('.needs-validation')
+                            // Loop over them and prevent submission
+                            Array.prototype.slice.call(forms)
+                                .forEach(function (form) {
+                                    form.addEventListener('submit', function (event) {
+                                        if (!form.checkValidity()) {
+                                            event.preventDefault()
+                                            event.stopPropagation()
+                                        }
+                                        form.classList.add('was-validated')
+                                    }, false)
+                                })
+                        })()
+                        // (!this.newUser.firt_name)
+                        //     ? swal("Nombre Vacio")
+                        //     : (!this.newUser.last_name)
+                        //         ? swal('Apellido Vacio')
+                        //         : (!this.newUser.username)
+                        //             ? swal('Nombre de Usuario esta Vacio')
+                        //             : (!this.validarEmail)
+                    },
+                    validarEmail() {
+                        var exp = /^(([^-/|}{!#$%^&+*<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+                        if (exp.test(this.newUser.email)) {
+                            return this.newUser.email
+                        } else {
+                            this.msj.push('falta tu correo')
+                            console.log(this.msj);
+                            return false
+                        }
+                        //test() retorna true si hay en la cadena una de las exp, retorna false si no hay 
+                    },
+                    validarPassword() {
+                        // let password = [...this.newUser.pass1]
+                        if (this.newUser.pass1 === '') {
+                            this.msj.push('Ingresa su Password 1')
+                            console.log(this.msj);
+                            return false
+                        }
+                        if (this.newUser.pass2 === '') {
+                            this.msj.push('Ingresa su Password 2')
+                            console.log(this.msj);
+                            return false
+                        }
+                        if (this.newUser.pass1 === this.newUser.pass2) {
+                            const minusculas = password.filter((v) => (/^[a-z]+$/.test(v)));
+                            const mayusculas = password.filter((v) => /^[A-Z]+$/.test(v));
+                            const numeros = password.filter((v) => /^[0-9]+$/.test(v));
+                            const caracter = password.filter((v) => /^[/*-+!@#$%^&*()_|}{":;'?><.,]+$/.test(v));
+                            const espacio = password.filter((v) => /\s\w*/.test(v));
+                            if (password.length >= 6) {
+                                if (!minusculas.length > 0) {
+                                    swal("su clave debe tener al menos una minuscula")
+                                    return false
+                                }
+                                if (!mayusculas.length > 0) {
+                                    swal("su clave debe tener al menos una mayuscula")
+                                    return false
+                                }
+                                if (!numeros.length > 0) {
+                                    swal("su clave debe tener al menos numeros");
+                                    return false;
+                                }
+                                if (!caracter.length > 0) {
+                                    swal(`su clave debe tener al menos uno de estos caracter /*-+!@#$%^&*()_|}{:;?><.,"'`);
+                                    return false
+                                }
+                                if (espacio.length > 0) {
+                                    swal("su clave no debe tener espacios")
+                                    return false
+                                }
+                            } else {
+                                swal('Su clave debe tener al menos 6 caracteres');
+                                return false
+                            }
+                        } else {
+                            swal('La contraseña No son iguales');
+                            return false
+                        }
+                        return password.join('')
+                    }
+                }
+            })
+
+        </script>
+
 </body>
 
 </html>
